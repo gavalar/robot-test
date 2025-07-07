@@ -1,4 +1,4 @@
-# Which? Engineering - Technical Exercise
+# Technical Exercise
 
 ## Scenario
 
