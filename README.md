@@ -1,31 +1,67 @@
-# Technical Exercise
+# 🤖 Robot Test
 
-## Scenario
+**Robot Test** is a modular TypeScript CLI tool that validates HTTP API responses against a structured set of expected results, defined in a simple JSON format.
 
-We have a robot in an arena. The robot can move forward, turn left, or turn right. The robot turns on the spot. It moves one unit at a time.
+It is designed as a lightweight testing utility for developers who want to automate simple assertions against a collection of endpoints — ideal for use in monitoring, smoke testing, or integration test scaffolding.
 
-We can tell the robot where it is in the arena using coordinates. And we can tell it the direction it is facing. As the robot moves it knows where it is in the arena & which direction it is facing.
+## ✨ Features
 
-We can give the robot a sequence of movements that it will follow along a path. For example, we could tell it to move forward, turn left, move forward. If the robot encounters a movement it does not understand it errors & goes no further.
+- ✅ Built with **TypeScript** and **object-oriented design** principles
+- 🧪 Compares real API responses to expected results from a test suite JSON file
+- 🔧 Supports configurable headers and payloads
+- 🧱 Modular class structure for future extensibility (e.g. reporters, authentication, retries)
+- 📦 Easy to run via CLI
 
-The arena is square and of limited size. If the robot runs into the walls of the arena it crashes & goes no further.
+## 📂 Example Test File (`robot-test-suite.json`)
 
-## Constraints
+```json
+[
+  {
+    "name": "Check GitHub API",
+    "url": "https://api.github.com",
+    "method": "GET",
+    "expected": {
+      "status": 200
+    }
+  }
+]
+```
 
-The robot should read JSON input from stdin. The input will contain the following fields:
+## 🚀 Usage
+```bash
+npm install
+npx ts-node index.ts robot-test-suite.json
+```
 
-- `arena` will be two coordinates defining opposite corners of the arena
-- `location` will be coordinates of the robot
-- `heading` will be one of `north`, `south`, `east`, `west`
-- `directions` will be an arbitrary length array containing movement commands: `forward`, `left`, `right`
+The script will:
 
-Coordinates are always a structure with `x` and `y` fields. Both these fields contain integers.
+Load the JSON test suite
 
-We expect the robot to output JSON to stdout. The output will contain the following fields:
+Perform the API calls
 
-- `status` will be either `ok`, `error`, or `crash`
-- `location` will be the final location coordinates of the robot having followed the `input` path
-- `heading` will be the heading of the robot at the end of its path or the point of crashing
-- `path` will be the path the robot took to its final point
+Compare responses to expected values
 
-In the case of an `error` or a `crash`, then the last movement in the `path` should be the one that caused the situation.
+Log results to the console
+
+## 🧱 Structure & Design Goals
+Written in TypeScript, using clear class structures (`RobotTest`, `HttpRequestHandler`) to separate concerns
+
+Designed for easy expansion — e.g. you can add `expectBodyContains`, `retryOnFail`, or output reporters
+
+Encapsulates HTTP logic, error handling, and result formatting
+
+Aligned with CLI design patterns for future command parsing (e.g. `commander` or `yargs`)
+
+## 🧭 Roadmap Ideas
+ Add support for `POST`, `PUT`, and custom payloads
+
+ Add assertion on response body / headers
+
+ Output as JSON, TAP, or JUnit XML
+
+ Integrate test runners or CI/CD workflows
+
+## 👨‍💻 Author
+Gavin Corbett – [LinkedIn](https://www.linkedin.com/in/gavcorbett/)
+
+This project is part of an ongoing professional development initiative focused on exploring TypeScript, test automation, and modern developer tooling using object-oriented design.
